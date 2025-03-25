@@ -2,19 +2,18 @@ import './App.css'
 import {useEffect, useState} from "react";
 import List from "./components/List.jsx";
 import Post from "./components/Post.jsx";
+import {fetchPosts} from "./API/api.js";
 
 function App() {
   const [posts, setPosts] = useState([])
 
-  async function fetchPosts() {
-    const response = await fetch('https://jsonplaceholder.typicode.com/posts');
-    const data = await response.json();
-    setPosts(data);
-  }
-
-  useEffect(() => {
-    fetchPosts();
-  }, []);
+    useEffect(() => {
+        async function loadPosts() {
+            const data = await fetchPosts();
+            setPosts(data);
+        }
+        loadPosts();
+    }, []);
 
   return (
       <>
