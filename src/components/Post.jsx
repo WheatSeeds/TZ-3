@@ -6,6 +6,8 @@ import Comment from "./Comment.jsx";
 
 const Post = ({ title, body, id, userId }) => {
     const [comments, setComments] = useState([])
+    const [commentVisible, setCommentVisible] = useState(false)
+
     async function fetchComments() {
         const response = await fetch(`https://jsonplaceholder.typicode.com/comments?postId=${id}`);
         const data = await response.json();
@@ -34,7 +36,15 @@ const Post = ({ title, body, id, userId }) => {
             <div className="post__divider"/>
             <span className="post__body">{body}</span>
             <div className="post__divider"/>
-            <List items={comments} renderItem={(comment) => <Comment {...comment} />} className={"comments-list"}/>
+            {commentVisible
+                ?(<>
+                    <List items={comments} renderItem={(comment) => <Comment {...comment} />}
+                          className={"comments-list"}/>
+                    <button onClick={() => setCommentVisible(!commentVisible)}>Hide comments</button>
+                </>)
+                : <button onClick={() => setCommentVisible(!commentVisible)}>View comments</button>
+            }
+
 
         </div>
     );
